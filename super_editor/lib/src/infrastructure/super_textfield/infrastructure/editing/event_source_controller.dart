@@ -39,23 +39,23 @@ class EventSourcedAttributedTextEditingController with ChangeNotifier implements
   @override
   AttributedText get text => _value.text;
 
-  // TODO: remove from interface
-  @override
-  set text(AttributedText _) => throw UnimplementedError();
+  // // TODO: remove from interface
+  // @override
+  // set text(AttributedText _) => throw UnimplementedError();
 
   @override
   TextSelection get selection => _value.selection;
 
-  // TODO: remove from interface
-  @override
-  set selection(TextSelection _) => throw UnimplementedError();
+  // // TODO: remove from interface
+  // @override
+  // set selection(TextSelection _) => throw UnimplementedError();
 
   @override
   TextRange get composingRegion => _value.composingRegion;
-
-  // TODO: remove from interface
-  @override
-  set composingRegion(TextRange _) => throw UnimplementedError();
+  //
+  // // TODO: remove from interface
+  // @override
+  // set composingRegion(TextRange _) => throw UnimplementedError();
 
   // TODO: this should probably be an extension method on AttributedText or something
   // like that.
