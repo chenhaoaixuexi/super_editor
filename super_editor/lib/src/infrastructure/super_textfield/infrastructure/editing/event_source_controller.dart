@@ -40,22 +40,37 @@ class EventSourcedAttributedTextEditingController with ChangeNotifier implements
   AttributedText get text => _value.text;
 
   // // TODO: remove from interface
-  // @override
+  @override
   // set text(AttributedText _) => throw UnimplementedError();
+  set text(AttributedText _) => _value.execute(ReplaceCommand(newText: _, replacementRange: composingRegion));
 
   @override
   TextSelection get selection => _value.selection;
 
   // // TODO: remove from interface
-  // @override
+  @override
   // set selection(TextSelection _) => throw UnimplementedError();
+  set selection(TextSelection newValue) {
+    if (newValue != _value.selection) {
+      _value.execute(ChangeSelectionCommand(newSelection: newValue));
+      _updateComposingAttributions();
+      notifyListeners();
+    }
+  }
 
   @override
   TextRange get composingRegion => _value.composingRegion;
+
   //
-  // // TODO: remove from interface
-  // @override
+  // TODO: remove from interface
+  @override
   // set composingRegion(TextRange _) => throw UnimplementedError();
+  set composingRegion(TextRange newValue) {
+    if (newValue != composingRegion) {
+      _value.execute(ChangeSelectionCommand(newSelection: selection, newComposingRange: newValue));
+      notifyListeners();
+    }
+  }
 
   // TODO: this should probably be an extension method on AttributedText or something
   // like that.
@@ -422,8 +437,7 @@ class EventSourcedAttributedTextEditingController with ChangeNotifier implements
         newBaseOffset = selection.baseOffset + newText.text.length;
       }
 
-      final newExtentOffset =
-          selection.extentOffset >= insertIndex ? selection.extentOffset + newText.text.length : selection.extentOffset;
+      final newExtentOffset = selection.extentOffset >= insertIndex ? selection.extentOffset + newText.text.length : selection.extentOffset;
 
       updatedSelection = TextSelection(
         baseOffset: newBaseOffset,
